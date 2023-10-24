@@ -1,0 +1,67 @@
+definitions:
+  response.DefaultResponse:
+    properties:
+      data: {}
+      message:
+        type: string
+    type: object
+  response.HealthCheckResponse:
+    properties:
+      message:
+        type: string
+    type: object
+host: localhost:8080
+info:
+  contact: {}
+  description: API Endpoints
+  title: CRUD
+  version: "1.0"
+paths:
+  /api/v1/product:
+    get:
+      consumes:
+      - application/json
+      description: Get all products from database
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.DefaultResponse'
+      summary: Get all products
+    post:
+      consumes:
+      - application/json
+      description: Add a product to database
+      parameters:
+      - description: product name
+        in: query
+        name: product_name
+        required: true
+        type: string
+      - description: price of the product
+        in: query
+        name: price
+        type: number
+      - description: quantity
+        in: query
+        name: quantity
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.DefaultResponse'
+      summary: Add a product
+  /healthz:
+    get:
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.HealthCheckResponse'
+      summary: Health Check
+swagger: "2.0"
