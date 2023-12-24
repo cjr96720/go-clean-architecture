@@ -25,10 +25,8 @@ func NewProductController(ps service.ProductServiceInterface) *ProductController
 //	@Summary		Add a product
 //	@Description	Add a product to database
 //	@Accept			json
-//	@Produce		json
-//	@Param			product_name	query		string	true	"product name"
-//	@Param			price			query		number	false	"price of the product"
-//	@Param			quantity		query		int		false	"quantity"
+//	@Produce		application/json
+//	@Param			products	body	request.AddProductRequest	true	"product you want to add"
 //	@Success		200				{object}	response.DefaultResponse
 //	@Router			/api/v1/product [post]
 func (pc *ProductController) Add(c *gin.Context) {
@@ -50,7 +48,7 @@ func (pc *ProductController) Add(c *gin.Context) {
 //	@Summary		Get all products
 //	@Description	Get all products from database
 //	@Accept			json
-//	@Produce		json
+//	@Produce		application/json
 //	@Success		200				{object}	response.DefaultResponse
 //	@Router			/api/v1/product [get]
 func (pc *ProductController) GetAll(c *gin.Context) {
@@ -62,6 +60,14 @@ func (pc *ProductController) GetAll(c *gin.Context) {
 	c.JSON(http.StatusOK, response)
 }
 
+// GetProductById    godoc
+//
+//	@Summary		Get product by its ID
+//	@Description	Get product by its ID
+//	@Param			productId	path	string	true "product ID"
+//	@Produce		application/json
+//	@Success		200				{object}	response.DefaultResponse
+//	@Router			/api/v1/product/{productId} [get]
 func (pc *ProductController) GetById(c *gin.Context) {
 	productId, err := strconv.Atoi(c.Param(("productId")))
 	utils.ErrorPanic(err)
@@ -82,6 +88,15 @@ func (pc *ProductController) GetById(c *gin.Context) {
 	}
 }
 
+// UpdateProduct    godoc
+//
+//	@Summary		Update product by its ID
+//	@Description	Update product by its ID
+//	@Param			productId	path	string							true	"product ID"
+//	@Param			products	body	request.UpdateProductRequest	true	"things you want to update"
+//	@Produce		application/json
+//	@Success		200				{object}	response.DefaultResponse
+//	@Router			/api/v1/product/{productId} [patch]
 func (pc *ProductController) Update(c *gin.Context) {
 	updateProductRequest := request.UpdateProductRequest{}
 	err := c.ShouldBindJSON(&updateProductRequest)
@@ -99,6 +114,14 @@ func (pc *ProductController) Update(c *gin.Context) {
 	c.JSON(http.StatusOK, response)
 }
 
+// DeleteProductById    godoc
+//
+//	@Summary		Delete product by its ID
+//	@Description	Delete product by its ID
+//	@Param			productId	path	string	true	"product ID"
+//	@Produce		application/json
+//	@Success		200				{object}	response.DefaultResponse
+//	@Router			/api/v1/product/{productId} [delete]
 func (pc *ProductController) Delete(c *gin.Context) {
 	productId, err := strconv.Atoi(c.Param(("productId")))
 	utils.ErrorPanic(err)

@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
@@ -24,6 +25,14 @@ func main() {
 
 	// gin Engine
 	gin := gin.Default()
+
+	// add CORS
+	gin.Use(cors.New(cors.Config{
+		AllowOrigins:     []string{"*"},
+		AllowCredentials: false,
+		AllowHeaders:     []string{"*"},
+		AllowMethods:     []string{"*"},
+	}))
 
 	// add swagger
 	gin.GET("/docs/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))

@@ -1,11 +1,19 @@
 FROM golang:1.21.3
 
-RUN apt-get update && apt-get install -y vim
+WORKDIR /app
 
-# for migration
+# download packages
+COPY go.mod go.sum ./
+RUN go mod download
+RUN go install github.com/swaggo/swag/cmd/swag@latest
 RUN go install -tags 'postgres' github.com/golang-migrate/migrate/v4/cmd/migrate@latest
 
-# for swagger
-RUN go install github.com/swaggo/swag/cmd/swag@latest
+# build application
+COPY . .
+RUN go build -o go-backend ./cmd/main.go
 
-WORKDIR /root/go-clean-architecture
+# expose 8080 port
+EXPOSE 8080
+
+# run application
+CMD ["./go-backend"]

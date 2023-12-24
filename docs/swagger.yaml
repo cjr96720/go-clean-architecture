@@ -1,4 +1,28 @@
 definitions:
+  request.AddProductRequest:
+    properties:
+      price:
+        type: number
+      product_name:
+        type: string
+      quantity:
+        type: integer
+    required:
+    - product_name
+    type: object
+  request.UpdateProductRequest:
+    properties:
+      id:
+        type: integer
+      price:
+        type: number
+      product_name:
+        type: string
+      quantity:
+        type: integer
+    required:
+    - id
+    type: object
   response.DefaultResponse:
     properties:
       data: {}
@@ -35,19 +59,12 @@ paths:
       - application/json
       description: Add a product to database
       parameters:
-      - description: product name
-        in: query
-        name: product_name
+      - description: product you want to add
+        in: body
+        name: products
         required: true
-        type: string
-      - description: price of the product
-        in: query
-        name: price
-        type: number
-      - description: quantity
-        in: query
-        name: quantity
-        type: integer
+        schema:
+          $ref: '#/definitions/request.AddProductRequest'
       produces:
       - application/json
       responses:
@@ -56,6 +73,61 @@ paths:
           schema:
             $ref: '#/definitions/response.DefaultResponse'
       summary: Add a product
+  /api/v1/product/{productId}:
+    delete:
+      description: Delete product by its ID
+      parameters:
+      - description: product ID
+        in: path
+        name: productId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.DefaultResponse'
+      summary: Delete product by its ID
+    get:
+      description: Get product by its ID
+      parameters:
+      - description: product ID
+        in: path
+        name: productId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.DefaultResponse'
+      summary: Get product by its ID
+    patch:
+      description: Update product by its ID
+      parameters:
+      - description: product ID
+        in: path
+        name: productId
+        required: true
+        type: string
+      - description: things you want to update
+        in: body
+        name: products
+        required: true
+        schema:
+          $ref: '#/definitions/request.UpdateProductRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.DefaultResponse'
+      summary: Update product by its ID
   /healthz:
     get:
       responses:

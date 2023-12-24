@@ -45,23 +45,96 @@ const docTemplate = `{
                 "summary": "Add a product",
                 "parameters": [
                     {
+                        "description": "product you want to add",
+                        "name": "products",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/request.AddProductRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.DefaultResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/product/{productId}": {
+            "get": {
+                "description": "Get product by its ID",
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Get product by its ID",
+                "parameters": [
+                    {
                         "type": "string",
-                        "description": "product name",
-                        "name": "product_name",
-                        "in": "query",
+                        "description": "product ID",
+                        "name": "productId",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.DefaultResponse"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "Delete product by its ID",
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Delete product by its ID",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "product ID",
+                        "name": "productId",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.DefaultResponse"
+                        }
+                    }
+                }
+            },
+            "patch": {
+                "description": "Update product by its ID",
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Update product by its ID",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "product ID",
+                        "name": "productId",
+                        "in": "path",
                         "required": true
                     },
                     {
-                        "type": "number",
-                        "description": "price of the product",
-                        "name": "price",
-                        "in": "query"
-                    },
-                    {
-                        "type": "integer",
-                        "description": "quantity",
-                        "name": "quantity",
-                        "in": "query"
+                        "description": "things you want to update",
+                        "name": "products",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/request.UpdateProductRequest"
+                        }
                     }
                 ],
                 "responses": {
@@ -89,6 +162,43 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "request.AddProductRequest": {
+            "type": "object",
+            "required": [
+                "product_name"
+            ],
+            "properties": {
+                "price": {
+                    "type": "number"
+                },
+                "product_name": {
+                    "type": "string"
+                },
+                "quantity": {
+                    "type": "integer"
+                }
+            }
+        },
+        "request.UpdateProductRequest": {
+            "type": "object",
+            "required": [
+                "id"
+            ],
+            "properties": {
+                "id": {
+                    "type": "integer"
+                },
+                "price": {
+                    "type": "number"
+                },
+                "product_name": {
+                    "type": "string"
+                },
+                "quantity": {
+                    "type": "integer"
+                }
+            }
+        },
         "response.DefaultResponse": {
             "type": "object",
             "properties": {
